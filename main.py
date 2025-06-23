@@ -1,6 +1,10 @@
 import pygame
 from pygame.locals import *
 
+# a Sprite is an object that is used to represent a visual element on the screen,
+# EX: a player, enemy, a bullet, etc
+# It includes an image and a behavior
+
 pygame.init()
 
 # sets time
@@ -81,7 +85,20 @@ class Bird(pygame.sprite.Sprite): # class for the actual bird
         else: # gameOver is now true
              self.image = pygame.transform.rotate(self.images[self.index], -90) # sets the bird to 90 degrees after impact (stops animation moving after flappy has died)
 
-bird_group = pygame.sprite.Group() # keeps track of all the sprites in the game
+# the pipe obstacles has its own class
+class Pipe(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("pipe.png")
+
+        # creates a rectangle based on the dimensions of the pipe img
+        self.rect = self.image.get_rect()
+        # gets coordinates of the rectangle
+        self.rect.topleft = [x, y]
+
+bird_group = pygame.sprite.Group() # keeps track of all bird animation (the sprites) in the game
+pipe_group = pygame.sprite.Group() # keeps track of all pipes in the game
+
 
 # a sprite is a 2D image that can be integrated into a larger scene (in this case flappy)
 
@@ -99,9 +116,11 @@ while run: # runs the flappy bird game
     # draw background
     screen.blit(background, (0,0)) # sets the background to background
 
-    # draws background (adds flappy bird onto the game)
+    # draws background (adds flappy bird onto the game, and pipes)
     bird_group.draw(screen)
     bird_group.update() # i think this allows the flapping animation to work
+    pipe_group.draw(screen)
+    pipe_group.update()
     
     screen.blit(ground, (groundScroll, 768)) # adds ground img to the game
 
