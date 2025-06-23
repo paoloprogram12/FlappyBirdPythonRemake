@@ -39,6 +39,7 @@ passPipe = False # boolean to see if the bird has passed a pipe or not
 # loads images
 background = pygame.image.load("bg.png") # variable for the background img
 ground = pygame.image.load("ground.png") # variable for the ground img
+reset_button = pygame.image.load("restart.png")
 
 # the text for the score
 def draw_text(text, font, text_col, x, y):
@@ -127,6 +128,16 @@ class Pipe(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
+class Button():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    def draw(self):
+
+        # draw button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
 bird_group = pygame.sprite.Group() # keeps track of all bird animation (the sprites) in the game
 pipe_group = pygame.sprite.Group() # keeps track of all pipes in the game
@@ -138,6 +149,8 @@ flappy = Bird(100, int(screenHeight / 2)) # initalizes the bird class (the param
 
 bird_group.add(flappy) # adds the bird into the the sprite group
 
+# create restart button instance
+button = Button(screenWidth // 2 - 50, screenHeight // 2 - 100, reset_button)
 
 run = True
 while run: # runs the flappy bird game
@@ -171,7 +184,7 @@ while run: # runs the flappy bird game
                 score += 1
                 passPipe = False
 
-    draw_text()
+    draw_text(str(score), font, white, int(screenWidth / 2), 20)
 
     # if a collision has occurred
     if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy.rect.top < 0:
@@ -200,6 +213,10 @@ while run: # runs the flappy bird game
             groundScroll = 0
         pipe_group.update() # updates the pipes to the screen (its under here so if flappy dies, pipes stop updating)
 
+    # checks for game over and reset
+    if gameOver == True:
+        button.draw()
+        
 
     # quits the game (when the x button on the right is clicked)
     for event in pygame.event.get():
