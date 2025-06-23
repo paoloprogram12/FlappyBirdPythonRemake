@@ -136,8 +136,20 @@ class Button():
 
     def draw(self):
 
+        action = False
+
+        # get mouse position
+        pos = pygame.mouse.get_pos()
+
+        # checks if mouse is over the button
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1: # if lmb is clicked
+                action = True
+
         # draw button
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
 
 bird_group = pygame.sprite.Group() # keeps track of all bird animation (the sprites) in the game
 pipe_group = pygame.sprite.Group() # keeps track of all pipes in the game
@@ -215,8 +227,9 @@ while run: # runs the flappy bird game
 
     # checks for game over and reset
     if gameOver == True:
-        button.draw()
-        
+        if button.draw() == True:
+            gameOver = False
+
 
     # quits the game (when the x button on the right is clicked)
     for event in pygame.event.get():
