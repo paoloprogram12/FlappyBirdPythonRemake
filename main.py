@@ -24,6 +24,8 @@ scrollSpeed = 4 # moves by 4 px (used for how fast should the ground be moving)
 flying = False # bool to check if the game has started or not
 gameOver = False # bool to see if flappy has died :(
 pipeGap = 150
+pipeFrequency = 1500 # milliseconds
+lastPipe = pygame.time.get_ticks() # measures the time from when the game started
 
 # loads images
 background = pygame.image.load("bg.png") # variable for the background img
@@ -149,6 +151,15 @@ while run: # runs the flappy bird game
     
     # draw and scrolls the ground
     if gameOver == False:
+        # generates new pipes
+        time_now = pygame.time.get_ticks()
+        if time_now - lastPipe > pipeFrequency:
+            btm_pipe = Pipe(screenWidth, int(screenHeight / 2), -1) # adds a bottom pipe onto the screen
+            top_pipe = Pipe(screenWidth, int(screenHeight / 2), 1) # adds top pipe onto the screen
+            pipe_group.add(btm_pipe)
+            pipe_group.add(top_pipe)
+            lastPipe = time_now
+
         groundScroll -= scrollSpeed # allows the ground img to look like it is moving
         # resets the x coordinate to once it becomes > than 35
         if abs(groundScroll) > 35:
