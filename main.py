@@ -139,12 +139,14 @@ while run: # runs the flappy bird game
     bird_group.draw(screen)
     bird_group.update() # i think this allows the flapping animation to work
     pipe_group.draw(screen)
-    pipe_group.update()
     
     screen.blit(ground, (groundScroll, 768)) # adds ground img to the game
 
+    # if a collision has occurred
+    if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy.rect.top < 0:
+        gameOver = True
     # checks if bird has made impact to the ground :(
-    if flappy.rect.bottom > 768:
+    if flappy.rect.bottom >= 768:
         gameOver = True
         flying = False
     
@@ -165,6 +167,7 @@ while run: # runs the flappy bird game
         # resets the x coordinate to once it becomes > than 35
         if abs(groundScroll) > 35:
             groundScroll = 0
+        pipe_group.update() # updates the pipes to the screen (its under here so if flappy dies, pipes stop updating)
 
 
     # quits the game (when the x button on the right is clicked)
