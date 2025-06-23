@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 
 # a Sprite is an object that is used to represent a visual element on the screen,
 # EX: a player, enemy, a bullet, etc
@@ -109,6 +110,8 @@ class Pipe(pygame.sprite.Sprite):
     # function for pipes to move left
     def update(self):
         self.rect.x -= scrollSpeed # scroolspeed is 4
+        if self.rect.right < 0:
+            self.kill()
 
 
 bird_group = pygame.sprite.Group() # keeps track of all bird animation (the sprites) in the game
@@ -151,8 +154,9 @@ while run: # runs the flappy bird game
         # works by using the time to generate multiple pipes
         time_now = pygame.time.get_ticks()
         if time_now - lastPipe > pipeFrequency:
-            btm_pipe = Pipe(screenWidth, int(screenHeight / 2), -1) # adds a bottom pipe onto the screen
-            top_pipe = Pipe(screenWidth, int(screenHeight / 2), 1) # adds top pipe onto the screen
+            pipe_height = random.randint(-100, 100)
+            btm_pipe = Pipe(screenWidth, int(screenHeight / 2) + pipe_height, -1) # adds a bottom pipe onto the screen
+            top_pipe = Pipe(screenWidth, int(screenHeight / 2) + pipe_height, 1) # adds top pipe onto the screen
             pipe_group.add(btm_pipe)
             pipe_group.add(top_pipe)
             lastPipe = time_now
