@@ -25,7 +25,7 @@ flying = False # bool to check if the game has started or not
 gameOver = False # bool to see if flappy has died :(
 pipeGap = 150
 pipeFrequency = 1500 # milliseconds
-lastPipe = pygame.time.get_ticks() # measures the time from when the game started
+lastPipe = pygame.time.get_ticks() - pipeFrequency # measures the time from when the game started
 
 # loads images
 background = pygame.image.load("bg.png") # variable for the background img
@@ -121,10 +121,6 @@ flappy = Bird(100, int(screenHeight / 2)) # initalizes the bird class (the param
 
 bird_group.add(flappy) # adds the bird into the the sprite group
 
-btm_pipe = Pipe(300, int(screenHeight / 2), -1) # adds a bottom pipe onto the screen
-top_pipe = Pipe(300, int(screenHeight / 2), 1) # adds top pipe onto the screen
-pipe_group.add(btm_pipe)
-pipe_group.add(top_pipe)
 
 
 run = True
@@ -150,8 +146,9 @@ while run: # runs the flappy bird game
         flying = False
     
     # draw and scrolls the ground
-    if gameOver == False:
+    if gameOver == False and flying == True: # if the game hasn't started and i have already clicked
         # generates new pipes
+        # works by using the time to generate multiple pipes
         time_now = pygame.time.get_ticks()
         if time_now - lastPipe > pipeFrequency:
             btm_pipe = Pipe(screenWidth, int(screenHeight / 2), -1) # adds a bottom pipe onto the screen
