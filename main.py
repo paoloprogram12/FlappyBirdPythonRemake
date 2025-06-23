@@ -87,14 +87,23 @@ class Bird(pygame.sprite.Sprite): # class for the actual bird
 
 # the pipe obstacles has its own class
 class Pipe(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, position):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("pipe.png")
 
         # creates a rectangle based on the dimensions of the pipe img
         self.rect = self.image.get_rect()
-        # gets coordinates of the rectangle
-        self.rect.topleft = [x, y]
+
+        # position 1 is from the top, -1 is from the bottom
+        if position == 1:
+            self.image = pygame.transform.flip(self.image, False, True) #x, y
+             # gets coordinates of the rectangle
+            self.rect.bottomleft = [x, y]
+        if position == -1:
+            # gets coordinates of the rectangle
+            self.rect.topleft = [x, y]
+
+
 
 bird_group = pygame.sprite.Group() # keeps track of all bird animation (the sprites) in the game
 pipe_group = pygame.sprite.Group() # keeps track of all pipes in the game
@@ -105,6 +114,11 @@ pipe_group = pygame.sprite.Group() # keeps track of all pipes in the game
 flappy = Bird(100, int(screenHeight / 2)) # initalizes the bird class (the parameters is where the bird will be located in the game)
 
 bird_group.add(flappy) # adds the bird into the the sprite group
+
+btm_pipe = Pipe(300, int(screenHeight / 2), -1) # adds a bottom pipe onto the screen
+top_pipe = Pipe(300, int(screenHeight / 2), 1) # adds top pipe onto the screen
+pipe_group.add(btm_pipe)
+pipe_group.add(top_pipe)
 
 
 run = True
