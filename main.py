@@ -24,9 +24,11 @@ groundScroll = 0 # used for the ground image to change its coordinates
 scrollSpeed = 4 # moves by 4 px (used for how fast should the ground be moving)
 flying = False # bool to check if the game has started or not
 gameOver = False # bool to see if flappy has died :(
-pipeGap = 150
+pipeGap = 150 # gap between top and btm pipes
 pipeFrequency = 1500 # milliseconds
 lastPipe = pygame.time.get_ticks() - pipeFrequency # measures the time from when the game started
+score = 0 # score for bird
+passPipe = False # boolean to see if the bird has passed a pipe or not
 
 # loads images
 background = pygame.image.load("bg.png") # variable for the background img
@@ -141,6 +143,22 @@ while run: # runs the flappy bird game
     pipe_group.draw(screen)
     
     screen.blit(ground, (groundScroll, 768)) # adds ground img to the game
+
+    # used to check the score
+    
+    if len(pipe_group) > 0:
+        # how it works:
+        # if the bird is in the middle of the left side of the pipe and the right side of the pipe
+        if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.left\
+        and bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right\
+        and passPipe == False:
+            passPipe = True
+
+        if passPipe == True:
+            # if the bird has left the right hand side of the pipe
+            if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.right:
+                score += 1
+                passPipe = False
 
     # if a collision has occurred
     if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy.rect.top < 0:
