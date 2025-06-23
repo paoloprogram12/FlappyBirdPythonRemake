@@ -23,6 +23,7 @@ groundScroll = 0 # used for the ground image to change its coordinates
 scrollSpeed = 4 # moves by 4 px (used for how fast should the ground be moving)
 flying = False # bool to check if the game has started or not
 gameOver = False # bool to see if flappy has died :(
+pipeGap = 150
 
 # loads images
 background = pygame.image.load("bg.png") # variable for the background img
@@ -98,11 +99,14 @@ class Pipe(pygame.sprite.Sprite):
         if position == 1:
             self.image = pygame.transform.flip(self.image, False, True) #x, y
              # gets coordinates of the rectangle
-            self.rect.bottomleft = [x, y]
+            self.rect.bottomleft = [x, y -  int(pipeGap / 2)]
         if position == -1:
             # gets coordinates of the rectangle
-            self.rect.topleft = [x, y]
+            self.rect.topleft = [x, y + int(pipeGap / 2)]
 
+    # function for pipes to move left
+    def update(self):
+        self.rect.x -= scrollSpeed # scroolspeed is 4
 
 
 bird_group = pygame.sprite.Group() # keeps track of all bird animation (the sprites) in the game
