@@ -7,9 +7,12 @@ import random
 # It includes an image and a behavior
 
 pygame.init()
+pygame.mixer.init()
 
 # sounds
-flap_sound = pygame.mixer.Sound("Flappy Flap.wav")
+flap_sound = pygame.mixer.Sound("Flappy Flapper.wav")
+death_sound = pygame.mixer.Sound("Flappy Death.wav")
+score_sound = pygame.mixer.Sound("Flappy Score.wav")
 
 # sets time
 clock = pygame.time.Clock() # creates a timer
@@ -174,6 +177,8 @@ bird_group.add(flappy) # adds the bird into the the sprite group
 # create restart button instance
 button = Button(screenWidth // 2 - 50, screenHeight // 2 - 100, reset_button)
 
+death_played = False
+
 run = True
 while run: # runs the flappy bird game
 
@@ -211,6 +216,7 @@ while run: # runs the flappy bird game
     # if a collision has occurred
     if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy.rect.top < 0:
         gameOver = True
+
     # checks if bird has made impact to the ground :(
     if flappy.rect.bottom >= 768:
         gameOver = True
@@ -237,8 +243,12 @@ while run: # runs the flappy bird game
 
     # checks for game over and reset
     if gameOver == True:
+        if not death_played:
+            death_sound.play()
+            death_played = True
         if button.draw() == True:
             gameOver = False
+            death_played = False
             score = reset_game()
 
 
