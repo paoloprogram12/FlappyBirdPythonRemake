@@ -96,6 +96,7 @@ class Bird(pygame.sprite.Sprite): # class for the actual bird
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False: # used to check if the mouse has been clicked, 0 means for left click, 1 is used to check if it was clicked
                 self.clicked = True
                 self.vel = -10
+                flap_sound.play()
             if pygame.mouse.get_pressed()[0] == 0 and self.clicked == True: # used to check if the mouse has been clicked, 0 means for left click, 0 is used to check if it was not clicked
                 self.clicked = False
 
