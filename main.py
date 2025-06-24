@@ -8,6 +8,9 @@ import random
 
 pygame.init()
 
+# sounds
+flap_sound = pygame.mixer.Sound("Flappy Flap.wav")
+
 # sets time
 clock = pygame.time.Clock() # creates a timer
 fps = 60 # framerate for the game
@@ -245,6 +248,7 @@ while run: # runs the flappy bird game
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN and flying == False and gameOver == False: # have to click a mouse button first before starting the game
             flying = True
+            
 
     # updates the display (updates the background img)
     pygame.display.update()
