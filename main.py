@@ -208,6 +208,7 @@ while run: # runs the flappy bird game
         if passPipe == True:
             # if the bird has left the right hand side of the pipe
             if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.right:
+                score_sound.play()
                 score += 1
                 passPipe = False
 
